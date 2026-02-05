@@ -1,0 +1,36 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #f4f5f7;
+  --text: #383f4d;
+  --muted: #6d7380;
+  --accent: #1d5fd3;
+  --accent-dark: #164ba7;
+  --card: #ffffff;
+  --border: #d7dbe2;
+  --shadow: 0 14px 30px rgba(12, 18, 32, 0.12);
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

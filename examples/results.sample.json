@@ -1,0 +1,149 @@
+{
+  "categories": {
+    "Hebrew comprehension": {
+      "n_tasks": 1,
+      "score": 1.0,
+      "tasks": {
+        "structured_extraction": {
+          "n_questions": 1,
+          "score": 1.0
+        }
+      }
+    },
+    "Kashrut": {
+      "n_tasks": 1,
+      "score": 1.0,
+      "tasks": {
+        "milk_meat_status": {
+          "n_questions": 1,
+          "score": 1.0
+        }
+      }
+    },
+    "Shabbat": {
+      "n_tasks": 1,
+      "score": 1.0,
+      "tasks": {
+        "melacha_classification": {
+          "n_questions": 1,
+          "score": 1.0
+        }
+      }
+    },
+    "Sources": {
+      "n_tasks": 1,
+      "score": 1.0,
+      "tasks": {
+        "siman_selection": {
+          "n_questions": 1,
+          "score": 1.0
+        }
+      }
+    },
+    "Tefillah": {
+      "n_tasks": 1,
+      "score": 1.0,
+      "tasks": {
+        "beracha_selection": {
+          "n_questions": 1,
+          "score": 1.0
+        }
+      }
+    },
+    "Zmanim": {
+      "n_tasks": 1,
+      "score": 1.0,
+      "tasks": {
+        "time_after_sunset": {
+          "n_questions": 1,
+          "score": 1.0
+        }
+      }
+    }
+  },
+  "n_missing": 0,
+  "n_questions": 6,
+  "overall": 1.0,
+  "per_question": [
+    {
+      "error": null,
+      "is_correct": true,
+      "max_score": 1.0,
+      "question_id": "388a9c8c9c4f5c274c26c19192fdf7ac15cf60c02d0fb46fe41714e9e940e49d",
+      "score": 1.0
+    },
+    {
+      "error": null,
+      "is_correct": true,
+      "max_score": 1.0,
+      "question_id": "bd6febe40a08ceb66fe6dece4b5ee7305ed0e7da334d842edda27e198b1ebcb6",
+      "score": 1.0
+    },
+    {
+      "error": null,
+      "is_correct": true,
+      "max_score": 1.0,
+      "question_id": "35924de325cec56b024975cf0ef3fbde6c2322030a8189e0419dfe3f63b22a92",
+      "score": 1.0
+    },
+    {
+      "error": null,
+      "is_correct": true,
+      "max_score": 1.0,
+      "question_id": "19acb229def634c87798039efe17af91558c36f2db55caac94b711c79700af4a",
+      "score": 1.0
+    },
+    {
+      "error": null,
+      "is_correct": true,
+      "max_score": 1.0,
+      "question_id": "e5b7d69fe47baae4e7a2d17bd80e375fe4edc23e1f8045b836be75b83aa52760",
+      "score": 1.0
+    },
+    {
+      "error": null,
+      "is_correct": true,
+      "max_score": 1.0,
+      "question_id": "7e891fb15872272f57c23ada2f0252052aaf528555a92cc8505d14448894e81b",
+      "score": 1.0
+    }
+  ],
+  "tasks": {
+    "Hebrew comprehension::structured_extraction": {
+      "category": "Hebrew comprehension",
+      "n_questions": 1,
+      "score": 1.0,
+      "task": "structured_extraction"
+    },
+    "Kashrut::milk_meat_status": {
+      "category": "Kashrut",
+      "n_questions": 1,
+      "score": 1.0,
+      "task": "milk_meat_status"
+    },
+    "Shabbat::melacha_classification": {
+      "category": "Shabbat",
+      "n_questions": 1,
+      "score": 1.0,
+      "task": "melacha_classification"
+    },
+    "Sources::siman_selection": {
+      "category": "Sources",
+      "n_questions": 1,
+      "score": 1.0,
+      "task": "siman_selection"
+    },
+    "Tefillah::beracha_selection": {
+      "category": "Tefillah",
+      "n_questions": 1,
+      "score": 1.0,
+      "task": "beracha_selection"
+    },
+    "Zmanim::time_after_sunset": {
+      "category": "Zmanim",
+      "n_questions": 1,
+      "score": 1.0,
+      "task": "time_after_sunset"
+    }
+  }
+}
