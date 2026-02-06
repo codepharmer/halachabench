@@ -53,6 +53,24 @@
   font-size: 0.95rem;
 }
 
+.hero-search {
+  max-width: 840px;
+  margin: 0 auto 18px;
+  text-align: left;
+}
+
+.hero-search-title {
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
+}
+
+.hero-search-subtitle {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+}
+
 .hero-links {
   display: flex;
   flex-wrap: wrap;
@@ -415,6 +433,7 @@
 
 .autocomplete {
   position: relative;
+  text-align: left;
 }
 
 .autocomplete-field {

@@ -195,7 +195,7 @@ export class AppComponent {
   }
 
   get showAutocomplete(): boolean {
-    return this.autocompleteOpen && this.searchQuery.trim().length >= 2;
+    return this.autocompleteOpen && this.searchQuery.trim().length > 0;
   }
 
   onSearchInput(event: Event): void {
@@ -380,7 +380,7 @@ export class AppComponent {
   }
 
   private updateSuggestions(): void {
-    if (!this.showAutocomplete) {
+    if (!this.autocompleteOpen) {
       this.suggestions = [];
       return;
     }
@@ -513,4 +513,3 @@ export class AppComponent {
     };
   }
 }
-
