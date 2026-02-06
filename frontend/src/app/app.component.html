@@ -192,6 +192,17 @@
                 </div>
 
                 <div class="autocomplete-id">{{ suggestion.id }}</div>
+                <div
+                  class="autocomplete-holidays"
+                  *ngIf="suggestion.holidayDates.length"
+                >
+                  <span
+                    class="chip chip-small chip-holiday"
+                    *ngFor="let holiday of suggestion.holidayDates"
+                  >
+                    {{ holiday }}
+                  </span>
+                </div>
 
                 <div
                   class="autocomplete-body"
