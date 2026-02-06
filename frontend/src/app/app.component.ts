@@ -63,7 +63,6 @@ interface QuestionSuggestion {
   options: AutocompleteOption[];
   instruction: string;
   details: string[];
-  holidayDates: string[];
   fullPrompt: string;
   haystack: string;
 }
@@ -125,9 +124,6 @@ export class AppComponent {
 
   private searchIndex: QuestionSuggestion[] = [];
   private blurTimer: ReturnType<typeof setTimeout> | null = null;
-  private holidayDateLookup: Record<string, string> = {};
-  private hebrewPartsFormatter: Intl.DateTimeFormat | null = null;
-  private hebrewPartsFormatterInitialized = false;
 
   private readonly releaseIndex$ = new BehaviorSubject<number>(0);
   private readonly releaseId$ = this.releaseIndex$.pipe(
@@ -163,8 +159,6 @@ export class AppComponent {
   );
 
   constructor(private readonly http: HttpClient) {
-    this.holidayDateLookup = this.computeHolidayDateLookup(new Date());
-
     this.questions$
       .pipe(
         catchError((error) => {
@@ -308,7 +302,6 @@ export class AppComponent {
   private indexQuestion(question: Question): QuestionSuggestion {
     const fullPrompt = question.turns?.[0]?.content ?? '';
     const preview = this.buildPromptPreview(fullPrompt);
-    const holidayDates = this.getHolidayDatesForPrompt(fullPrompt);
     const haystack = `${question.question_id} ${question.category} ${question.task} ${question.answer_type} ${fullPrompt}`
       .toLowerCase()
       .replace(/\s+/g, ' ')
@@ -323,231 +316,9 @@ export class AppComponent {
       options: preview.options,
       instruction: preview.instruction,
       details: preview.details,
-      holidayDates,
       fullPrompt,
       haystack
     };
-  }
-
-  private getHolidayDatesForPrompt(prompt: string): string[] {
-    const text = prompt.toLowerCase();
-    const lines: string[] = [];
-
-    const add = (key: string) => {
-      const value = this.holidayDateLookup[key];
-      if (!value) {
-        return;
-      }
-      if (!lines.includes(value)) {
-        lines.push(value);
-      }
-    };
-
-    if (text.includes('erev pesach')) {
-      add('erev_pesach');
-      add('pesach');
-    } else if (text.includes('pesach')) {
-      add('pesach');
-    }
-
-    if (text.includes('purim')) {
-      add('purim');
-      if (text.includes('shushan') || text.includes('jerusalem') || text.includes('15 adar')) {
-        add('shushan_purim');
-      }
-    }
-
-    if (text.includes('rosh chodesh')) {
-      add('rosh_chodesh');
-    }
-
-    if (text.includes('shavuot') || text.includes('shavuos')) {
-      add('shavuos');
-    }
-
-    if (text.includes('yom kippur')) {
-      add('yom_kippur');
-    }
-
-    if (text.includes('rosh hashana') || text.includes('rosh hashanah')) {
-      add('rosh_hashana');
-    }
-
-    if (text.includes('sukkot') || text.includes('sukkos')) {
-      add('sukkos');
-    }
-
-    if (text.includes('chanukah') || text.includes('hanukkah')) {
-      add('chanukah');
-    }
-
-    return lines;
-  }
-
-  private computeHolidayDateLookup(anchor: Date): Record<string, string> {
-    const lookup: Record<string, string> = {};
-
-    const formatMd = new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
-    const formatMdy = new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-
-    const formatRange = (start: Date, end: Date) => {
-      const startYear = start.getFullYear();
-      const endYear = end.getFullYear();
-      if (startYear === endYear) {
-        return `${formatMd.format(start)} - ${formatMd.format(end)}, ${startYear}`;
-      }
-      return `${formatMdy.format(start)} - ${formatMdy.format(end)}`;
-    };
-
-    const formatOne = (date: Date) => formatMdy.format(date);
-
-    const purim = this.findNextHebrewDate(anchor, (h) => {
-      const month = h.month.toLowerCase();
-      return h.day === 14 && month.startsWith('adar') && month !== 'adar i';
-    });
-    if (purim) {
-      lookup['purim'] = `Purim: ${formatOne(purim)}`;
-    }
-
-    const shushanPurim = this.findNextHebrewDate(anchor, (h) => {
-      const month = h.month.toLowerCase();
-      return h.day === 15 && month.startsWith('adar') && month !== 'adar i';
-    });
-    if (shushanPurim) {
-      lookup['shushan_purim'] = `Shushan Purim: ${formatOne(shushanPurim)}`;
-    }
-
-    const erevPesach = this.findNextHebrewDate(anchor, (h) => h.day === 14 && h.month.toLowerCase() === 'nisan');
-    if (erevPesach) {
-      lookup['erev_pesach'] = `Erev Pesach: ${formatOne(erevPesach)}`;
-    }
-
-    const pesachStart = this.findNextHebrewDate(anchor, (h) => h.day === 15 && h.month.toLowerCase() === 'nisan');
-    if (pesachStart) {
-      const pesachEnd = this.addDays(pesachStart, 7);
-      lookup['pesach'] = `Pesach: ${formatRange(pesachStart, pesachEnd)}`;
-    }
-
-    const shavuosStart = this.findNextHebrewDate(anchor, (h) => h.day === 6 && h.month.toLowerCase() === 'sivan');
-    if (shavuosStart) {
-      const shavuosEnd = this.addDays(shavuosStart, 1);
-      lookup['shavuos'] = `Shavuos: ${formatRange(shavuosStart, shavuosEnd)}`;
-    }
-
-    const rhStart = this.findNextHebrewDate(anchor, (h) => h.day === 1 && h.month.toLowerCase() === 'tishrei');
-    if (rhStart) {
-      const rhEnd = this.addDays(rhStart, 1);
-      lookup['rosh_hashana'] = `Rosh Hashana: ${formatRange(rhStart, rhEnd)}`;
-    }
-
-    const yk = this.findNextHebrewDate(anchor, (h) => h.day === 10 && h.month.toLowerCase() === 'tishrei');
-    if (yk) {
-      lookup['yom_kippur'] = `Yom Kippur: ${formatOne(yk)}`;
-    }
-
-    const sukkosStart = this.findNextHebrewDate(anchor, (h) => h.day === 15 && h.month.toLowerCase() === 'tishrei');
-    if (sukkosStart) {
-      const sukkosEnd = this.addDays(sukkosStart, 8);
-      lookup['sukkos'] = `Sukkos: ${formatRange(sukkosStart, sukkosEnd)}`;
-    }
-
-    const chanukahStart = this.findNextHebrewDate(anchor, (h) => h.day === 25 && h.month.toLowerCase() === 'kislev');
-    if (chanukahStart) {
-      const chanukahEnd = this.addDays(chanukahStart, 7);
-      lookup['chanukah'] = `Chanukah: ${formatRange(chanukahStart, chanukahEnd)}`;
-    }
-
-    const roshChodesh = this.findNextHebrewDate(anchor, (h) => h.day === 1);
-    if (roshChodesh) {
-      const parts = this.getHebrewParts(roshChodesh);
-      const labelMonth = parts?.month ?? 'Rosh Chodesh';
-      const prev = this.addDays(roshChodesh, -1);
-      const prevParts = this.getHebrewParts(prev);
-      if (prevParts?.day === 30) {
-        lookup['rosh_chodesh'] = `Rosh Chodesh ${labelMonth}: ${formatRange(prev, roshChodesh)}`;
-      } else {
-        lookup['rosh_chodesh'] = `Rosh Chodesh ${labelMonth}: ${formatOne(roshChodesh)}`;
-      }
-    }
-
-    return lookup;
-  }
-
-  private findNextHebrewDate(
-    anchor: Date,
-    match: (parts: { day: number; month: string; year: number }) => boolean
-  ): Date | null {
-    const maxDays = 700;
-    const d = new Date(anchor);
-    d.setHours(12, 0, 0, 0);
-
-    for (let i = 0; i <= maxDays; i += 1) {
-      const parts = this.getHebrewParts(d);
-      if (parts && match(parts)) {
-        return new Date(d);
-      }
-      d.setDate(d.getDate() + 1);
-    }
-
-    return null;
-  }
-
-  private addDays(date: Date, delta: number): Date {
-    const next = new Date(date);
-    next.setDate(next.getDate() + delta);
-    return next;
-  }
-
-  private getHebrewParts(date: Date): { day: number; month: string; year: number } | null {
-    if (!this.hebrewPartsFormatterInitialized) {
-      this.hebrewPartsFormatterInitialized = true;
-      try {
-        this.hebrewPartsFormatter = new Intl.DateTimeFormat('en-u-ca-hebrew', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
-        });
-      } catch {
-        this.hebrewPartsFormatter = null;
-      }
-    }
-
-    if (!this.hebrewPartsFormatter) {
-      return null;
-    }
-
-    try {
-      const parts = this.hebrewPartsFormatter.formatToParts(date);
-
-      let day: number | undefined;
-      let month: string | undefined;
-      let year: number | undefined;
-
-      for (const part of parts) {
-        if (part.type === 'day') {
-          day = Number(part.value);
-        } else if (part.type === 'month') {
-          month = part.value;
-        } else if (part.type === 'year') {
-          year = Number(part.value);
-        }
-      }
-
-      if (!day || !month || !year) {
-        return null;
-      }
-
-      return { day, month, year };
-    } catch {
-      return null;
-    }
   }
 
   private buildPromptPreview(prompt: string): {

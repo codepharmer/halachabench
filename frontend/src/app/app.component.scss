@@ -421,11 +421,6 @@
   color: var(--muted);
 }
 
-.chip-holiday {
-  background: rgba(14, 165, 233, 0.12);
-  color: #0369a1;
-}
-
 .hash {
   color: var(--muted);
   font-family: var(--font-mono);
@@ -549,13 +544,6 @@
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: rgba(71, 85, 105, 0.9);
-}
-
-.autocomplete-holidays {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
 }
 
 .autocomplete-body {
