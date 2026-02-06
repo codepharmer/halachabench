@@ -87,11 +87,7 @@
             </svg>
             Code
           </a>
-          <a
-            class="button"
-            [href]="'assets/releases/' + vm.releaseId + '/questions.jsonl'"
-            [attr.download]="'questions-' + vm.releaseId + '.jsonl'"
-          >
+          <a class="button" href="assets/releases/2026-02-05/questions.jsonl" download>
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -247,111 +243,6 @@
             <span>{{ task.name }}</span>
             <span class="task-score">{{ task.score | number: '1.3-3' }}</span>
             <span class="task-count">n={{ task.nQuestions }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="question-lookup">
-    <div class="container narrow">
-      <h3>Question lookup</h3>
-      <p class="section-lede">
-        Search by question id, category, task, or prompt text. Results include a
-        prompt preview so you do not need to click through.
-      </p>
-
-      <div class="autocomplete">
-        <div class="autocomplete-field">
-          <input
-            id="question-search"
-            class="autocomplete-input"
-            type="text"
-            placeholder="Search questions (type 2+ characters)..."
-            [value]="searchQuery"
-            autocomplete="off"
-            spellcheck="false"
-            (input)="onSearchInput($event)"
-            (focus)="onSearchFocus()"
-            (blur)="onSearchBlur()"
-            (keydown)="onSearchKeydown($event)"
-          />
-          <button
-            type="button"
-            class="autocomplete-clear"
-            *ngIf="searchQuery.length > 0"
-            (mousedown)="clearSearch($event)"
-          >
-            Clear
-          </button>
-        </div>
-
-        <div class="autocomplete-panel" *ngIf="showAutocomplete" role="listbox">
-          <div class="autocomplete-empty" *ngIf="suggestions.length === 0">
-            No matches.
-          </div>
-
-          <div
-            class="autocomplete-item"
-            *ngFor="let suggestion of suggestions; let idx = index"
-            [class.active]="idx === activeSuggestionIndex"
-            (mouseenter)="activeSuggestionIndex = idx"
-            (mousedown)="selectSuggestion(suggestion, $event)"
-            role="option"
-            [attr.aria-selected]="idx === activeSuggestionIndex"
-          >
-            <div class="autocomplete-item-head">
-              <div class="autocomplete-title">{{ suggestion.title }}</div>
-              <div class="autocomplete-chips">
-                <span class="chip chip-small">{{ suggestion.answerType }}</span>
-                <span class="chip chip-small chip-muted">
-                  {{ suggestion.category }} / {{ suggestion.task }}
-                </span>
-              </div>
-            </div>
-
-            <div class="autocomplete-id">{{ suggestion.id }}</div>
-
-            <div
-              class="autocomplete-body"
-              *ngIf="
-                suggestion.options.length ||
-                suggestion.instruction ||
-                suggestion.details.length
-              "
-            >
-              <div
-                class="autocomplete-options"
-                *ngIf="suggestion.options.length"
-              >
-                <div
-                  class="autocomplete-option"
-                  *ngFor="let option of suggestion.options"
-                >
-                  <span class="option-letter">{{ option.letter }}</span>
-                  <span class="option-text">{{ option.text }}</span>
-                </div>
-              </div>
-
-              <div
-                class="autocomplete-instruction"
-                *ngIf="suggestion.instruction"
-              >
-                {{ suggestion.instruction }}
-              </div>
-
-              <div
-                class="autocomplete-details"
-                *ngIf="suggestion.details.length"
-              >
-                <div
-                  class="autocomplete-detail"
-                  *ngFor="let line of suggestion.details"
-                >
-                  {{ line }}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
