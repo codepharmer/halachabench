@@ -1,17 +1,20 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg: #f4f5f7;
-  --text: #383f4d;
-  --muted: #6d7380;
-  --accent: #1d5fd3;
-  --accent-dark: #164ba7;
+  --bg: #ffffff;
+  --bg-soft: #f6f7fb;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #7c3aed;
+  --accent-dark: #6d28d9;
+  --ink: #111827;
   --card: #ffffff;
-  --border: #d7dbe2;
-  --shadow: 0 14px 30px rgba(12, 18, 32, 0.12);
-  --font-body: 'Space Grotesk', sans-serif;
-  --font-display: 'DM Serif Display', serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --border: #e5e7eb;
+  --shadow: 0 1px 0 rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.08);
+  --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-display: var(--font-body);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 }
 
 * {
@@ -23,11 +26,17 @@ body {
   font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 a {
-  color: inherit;
+  color: var(--accent);
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 img {

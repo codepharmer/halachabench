@@ -74,6 +74,7 @@ interface LeaderboardRow {
 interface ViewModel {
   releaseId: string;
   releaseDate: string;
+  bibtex: string;
   overall: number;
   nQuestions: number;
   nMissing: number;
@@ -95,7 +96,7 @@ interface ViewModel {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  readonly releaseDates = ['2026-02-05'];
+  readonly releaseDates = ['2026-02-05', '2026-02-06'];
   selectedReleaseIndex = 0;
 
   private readonly releaseIndex$ = new BehaviorSubject<number>(0);
@@ -203,9 +204,21 @@ export class AppComponent {
       }
     ];
 
+    const year = (questions[0]?.release_date ?? releaseId).slice(0, 4);
+    const bibtexYear = /^\d{4}$/.test(year) ? year : '2026';
+    const bibtex = [
+      `@misc{halachabench${bibtexYear},`,
+      `  title = {HalachaBench: Objective Halacha QA Benchmark},`,
+      `  year = {${bibtexYear}},`,
+      `  howpublished = {Seed release ${releaseId}},`,
+      `  note = {Deterministic scoring, closed-format tasks}`,
+      `}`
+    ].join('\n');
+
     return {
       releaseId,
       releaseDate: questions[0]?.release_date ?? releaseId,
+      bibtex,
       overall: report.overall,
       nQuestions: report.n_questions,
       nMissing: report.n_missing,
