@@ -87,7 +87,11 @@
             </svg>
             Code
           </a>
-          <a class="button" href="assets/releases/2026-02-05/questions.jsonl" download>
+          <a
+            class="button"
+            [href]="'assets/releases/' + vm.releaseId + '/questions.jsonl'"
+            download
+          >
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -175,7 +179,7 @@
           <h3>Leaderboard</h3>
           <p>
             We refresh the benchmark on a release cadence to reduce
-            contamination. The seed release is
+            contamination. The selected release is
             <strong>{{ vm.releaseId }}</strong>.
           </p>
         </div>

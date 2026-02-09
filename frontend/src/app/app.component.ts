@@ -97,9 +97,11 @@ interface ViewModel {
 })
 export class AppComponent {
   readonly releaseDates = ['2026-02-05', '2026-02-06'];
-  selectedReleaseIndex = 0;
+  selectedReleaseIndex = this.releaseDates.length - 1;
 
-  private readonly releaseIndex$ = new BehaviorSubject<number>(0);
+  private readonly releaseIndex$ = new BehaviorSubject<number>(
+    this.selectedReleaseIndex
+  );
   private readonly releaseId$ = this.releaseIndex$.pipe(
     map((index) => this.releaseDates[index])
   );
@@ -179,7 +181,12 @@ export class AppComponent {
       }))
       .sort((a, b) => b.score - a.score);
 
-    const sampleQuestions = questions.slice(0, 4).map((question) => ({
+    const samplePool = questions.filter(
+      (question) => question.release_date === releaseId
+    );
+    const sampleQuestions = (samplePool.length > 0 ? samplePool : questions)
+      .slice(0, 4)
+      .map((question) => ({
       id: question.question_id,
       prompt: question.turns?.[0]?.content ?? 'No prompt',
       category: question.category,
@@ -210,7 +217,7 @@ export class AppComponent {
       `@misc{halachabench${bibtexYear},`,
       `  title = {HalachaBench: Objective Halacha QA Benchmark},`,
       `  year = {${bibtexYear}},`,
-      `  howpublished = {Seed release ${releaseId}},`,
+      `  howpublished = {Release ${releaseId}},`,
       `  note = {Deterministic scoring, closed-format tasks}`,
       `}`
     ].join('\n');
